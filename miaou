@@ -1,0 +1,54 @@
+#!/bin/bash
+config_dir="$HOME"/.config/miaou
+bin_ext=/result/bin/nvim
+
+maybe_install_nix() {
+  cmd=nix
+
+  if [ -f "./nix-portable" ]; then
+    cmd=./nix-portable
+  fi
+
+  if $cmd --version >/dev/null 2>&1; then
+    read -r -n 1 -p "Nix is not availabe on the system, would you like to proceed with installation? (y/n)" yn
+    case $yn in
+      [Yy]* ) echo -e "\nProceeding with installation, preferring portable on supported systems.";;
+      [Nn]* ) echo -e "\nSetup cancelled, aborting." && exit
+    esac
+    platform=$(uname)
+    if [ "$platform" = "Darwin" ]; then
+      # match with git repo convention
+      sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
+    else
+      echo "Nix installation not found, downloading portable version."
+      curl -L https://github.com/DavHau/nix-portable/releases/latest/download/nix-portable-"$(uname -m)" >./nix-portable
+      chmod +x ./nix-portable || (echo "Failed to install nix-portable. Exiting." && exit)
+      echo "Nix portable installed successfully."
+      cmd=$(pwd)/nix-portable
+    fi
+  else
+    echo "Nix already installed or available in system."
+  fi
+}
+
+# actual script
+
+if [ "$1" = "--update" ]; then
+  nix build "$config_dir" --refresh
+elif [ "$1" = "--setup" ]; then
+  cwd=$(pwd)
+  if ! ls "$config_dir" >/dev/null 2>&1; then
+    echo "Config dir not initialized, creating directory."
+    mv "$(dirname "$(realpath "$0")")" "$config_dir"
+    cd "$config_dir" || (echo "Failed to create config dir." && exit)
+  else
+    if [ "$config_dir" != "$(pwd)" ]; then
+      cd "$config_dir" || (echo "Config dir already exists, but we could not change to it." && exit)
+    fi
+  fi
+  maybe_install_nix
+  cd "$cwd" || (echo "Could not return to previous directory." && exit)
+  echo "Setup completed."
+else
+  "$config_dir$bin_ext" "$@"
+fi
