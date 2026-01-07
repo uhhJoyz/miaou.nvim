@@ -48,7 +48,7 @@ update_miaou() {
 
 # actual script
 
-if [[ "$1" = "-h" || "$1" = "--help" || ! -f "$MIEYAOU_HOME$bin_ext" ]]; then
+if [[ "$1" = "-h" || "$1" = "--help" ]]; then
   echo -e "usage: mieyaou <your file> OR --<flag>\nflags:\n\t--update: fetch updates to the miaou definitions\n\t--rebuild: rebuild from locally stored meows\n\t--setup: perform first-time setup operations"
 elif [ "$1" = "--update" ]; then
   update_miaou
