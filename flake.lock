@@ -81,11 +81,11 @@
         "nvf": "nvf"
       },
       "locked": {
-        "lastModified": 1767801841,
-        "narHash": "sha256-6B8sAfMz2UvN7rzp0bRBFVAUHJkxZoZO6z67mTa9FQ8=",
+        "lastModified": 1768873481,
+        "narHash": "sha256-BmilLwtL9QOnUy9Kly/SoURXB0hfs4dFtjgUTblebng=",
         "owner": "uhhJoyz",
         "repo": "miaou-wrapper",
-        "rev": "3a49441af3aba837e2d74d2e50488ef6e03642af",
+        "rev": "55a7bb65487c0863939194cda7edd33b97511ba6",
         "type": "github"
       },
       "original": {
@@ -219,11 +219,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1767581664,
-        "narHash": "sha256-ugzOCWxQY4ncmgRsFIWIZTPrMUrsVggkDlv1M6QWnPM=",
+        "lastModified": 1768529071,
+        "narHash": "sha256-mTc+AHikTVhADNi4B6pb3C+Lh1dk1TW/Cn0dS4NWYac=",
         "owner": "uhhJoyz",
         "repo": "meowvf",
-        "rev": "285ee0b64c0a1b7c5cdc457736fac384e2849cfa",
+        "rev": "2f41c8c6cb8bbd9e5014f21901d939256b8dff42",
         "type": "github"
       },
       "original": {

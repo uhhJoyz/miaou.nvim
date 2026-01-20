@@ -2,19 +2,11 @@
 MIEYAOU_HOME="$HOME"/.config/mieyaou
 bin_ext=/result/bin/nvim
 
-get_nix_cmd() {
-  if [ -f "$MIEYAOU_HOME"/nix-portable ]; then
-    echo "$MIEYAOU_HOME"/nix-portable
-  else
-    echo nix
-  fi
-}
-
-nixcmd=$(get_nix_cmd)
+nixcmd=nix
 
 maybe_install_nix() {
-  if $nixcmd --version >/dev/null 2>&1; then
-    read -r -n 1 -p "Nix is not availabe on the system, would you like to proceed with installation? (y/n)" yn
+  if ! $nixcmd --version >/dev/null 2>&1; then
+    read -r -n 1 -p "Nix is not currently availabe on the system, would you like to proceed with installation? (y/n)" yn
     case $yn in
       [Yy]* ) echo -e "\nProceeding with installation, preferring portable on supported systems.";;
       [Nn]* ) echo -e "\nSetup cancelled, aborting." && exit
@@ -46,10 +38,21 @@ update_miaou() {
   echo "Successfully updated miaou."
 }
 
+rebuild() {
+  cwd=$(pwd)
+  cd "$MIEYAOU_HOME" || (echo "Config dir not present, cannot update" && exit)
+  rm -rf ./result
+  nix build . --refresh || (echo "Failed to update miaou. Terminating." && exit)
+  cd "$cwd" || (echo "Could not return to working directory." && exit)
+  echo "Successfully updated miaou."
+}
+
 # actual script
 
 if [[ "$1" = "-h" || "$1" = "--help" ]]; then
-  echo -e "usage: mieyaou <your file> OR --<flag>\nflags:\n\t--update: fetch updates to the miaou definitions\n\t--rebuild: rebuild from locally stored meows\n\t--setup: perform first-time setup operations"
+  echo -e "usage: mieyaou <your file> OR --<flag>\nflags:\n\t--update: fetch updates to the miaou definitions\n\t--rebuild: rebuild from locally stored meows (after changing your config)\n\t--setup: perform first-time setup operations\n\t--config: edit your config"
+elif [ "$1" = "--rebuild" ]; then
+  rebuild
 elif [ "$1" = "--update" ]; then
   update_miaou
 elif [ "$1" = "--setup" ]; then
@@ -68,6 +71,8 @@ elif [ "$1" = "--setup" ]; then
   echo "First-time setup completed, now building."
   update_miaou
   echo "Mieyaou updated."
+elif [ "$1" = "--config" ]; then 
+  "$MIEYAOU_HOME$bin_ext" $MIEYAOU_HOME/meows.nix && rebuild
 else
   "$MIEYAOU_HOME$bin_ext" "$@"
 fi

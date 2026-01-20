@@ -1,9 +1,11 @@
+# press `gcc` to enable/disable the current line
 [
   # -------- user experience --------
   /nvim-help # get help with keybinds (it's dangerous to go alone)
-  /training-wheels # get (mildly annoying) training wheels to help you learn keybinds
+  # /training-wheels # get (mildly annoying) training wheels to help you learn keybinds
   /qol # general changes you'd miss if they weren't there
   /nice-ui # a better UI for a better editor
+  /status-bar # add a status bar at the bottom (might cause high power usage on some systems)
   /dashboard # stylish dashboard for UX
   /easy-parenthesis # never press the other parenthesis
   /autocomplete # you'll never have the last word
@@ -56,6 +58,7 @@
   /lang/rust # fast AND memory safe?
   /lang/asm # back to the basics
   /lang/haskell # true classic functional programming
+  # /lang/lean # lean? - not currently working, no plans to implement soon
 
   # /meow-meow-mode # not for the faint of heart - beware!
 ]
